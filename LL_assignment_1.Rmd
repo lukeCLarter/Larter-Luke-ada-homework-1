@@ -1,0 +1,165 @@
+---
+title: "Larter-Luke-ada-homework-1"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(tidyverse)
+```
+
+#Challenge 1
+
+```{r}
+#import data
+darwin=file.choose()
+```
+```{r}
+#represent data as text
+darwin_txt=read_delim(darwin, '/n')
+```
+
+Count Number of Paragraphs:
+```{r}
+#imported as 56 separate rows, with each row a paragraph, so Ican just count nrows:
+num_chap=nrow(darwin_txt)
+print(paste('There are ',num_chap, ' chapters', sep=""))
+```
+
+Split CH34 into Vector of Words
+```{r}
+#get 34th
+ch34=darwin_txt[34,]
+print(ch34)
+```
+```{r}
+#split into vector of words and remove punctuation
+split=str_split(ch34, " ")
+split=gsub("[[:punct:]]","",str_split(ch34, " ")[1][[1]])
+```
+```{r}
+#find number of unique words
+num_unique=length(unique(split))
+print(paste('There are ', num_unique, ' unique words', sep=""))
+```
+```{r}
+#Find most common word
+tab=sort(table(split), decreasing=TRUE)
+print(paste('"',names(tab[1]), '"', ' is the most common word', sep=""))
+```
+```{r}
+#Find words ab0ve certain threshold numbers
+df=data.frame(tab)
+print(paste('there are ', nrow(filter(df, Freq==1)), ' words used once', sep=""))
+print(paste('there are ', nrow(filter(df, Freq>=5)), ' words used more than 5 times', sep=""))
+```
+
+```{r}
+#get 56th chapter
+final_quote=darwin_txt[56,]
+print(final_quote)
+```
+```{r}
+#split
+split_quote=gsub("[[:punct:]]","",str_split(final_quote, " ")[1][[1]])
+```
+
+```{r}
+#get every third word
+every_third=split_quote[seq(from=3, to=length(split_quote), by=3)]
+
+print(every_third)
+```
+
+```{r}
+print(sort(every_third, decreasing=T))
+```
+
+#Challenge 2
+
+```{r}
+t=c(35, 88, 42, 84, 81, 30)
+city=c('Beijing', 'Lagos', 'Paris', 'Rio de Janeiro', 'San Juan', 'Toronto')
+```
+```{r}
+names(t)=city
+```
+```{r}
+print(t[1:3])
+```
+```{r}
+print(t[c(3,5)])
+```
+
+```{r}
+m <- matrix(
+  data = seq(from=160, to=1),
+  nrow = 8,
+  ncol = 20,
+  byrow = FALSE
+)
+```
+```{r}
+print(m[5,2])
+```
+```{r}
+print(m[5:7,])
+```
+```{r}
+m2=m[3:6,4:9]
+print(class(m2))
+print(mode(m2))
+```
+
+#Challenge 4
+
+```{r}
+a=array(data = seq(from=2, to=800, 2), dim = c(5,5,4,4))
+
+print(a[1, 1, 1, 2])
+print(a[2, 3, 2, ])
+print(a[1:5, 1:5, 3, 3])
+```
+
+#Challenge 5
+
+```{r}
+#create a series of nested lists:
+Cercopithecoidea=list('Cercopithecidae')
+Hominoidea=list('Hominidae', 'Hylobatidae')
+Catarrhini=list(Cercopithecoidea, Hominoidea)
+
+Ceboidea=list('Cebidae', 'Atelidae', 'Pitheciidae')
+Platyrrhini=list(Ceboidea)
+
+Simiiformes=list(Catarrhini, Platyrrhini)
+
+Tarsioidea=list('Tarsiidae')
+Tarsiiformes=list(Tarsioidea)
+names(Tarsiiformes)="Tarsiiformes"
+
+Haplorhini=list(Simiiformes, Tarsiiformes)
+```
+```{r}
+Lorisoidea=list('Lorisidae', 'Galagidae')
+Lorisiformes=list(Lorisoidea)
+
+Lemuroidea=list('Cheirogaleidae', 'Lepilemuridae', 'Indriidae', 'Lemuridae', 'Daubentoniidae')
+Lemuriformes=list(Lemuroidea)
+
+Strepsirhini=list(Lemuriformes, Lorisiformes)
+
+
+Primates=list(Strepsirhini, Haplorhini)
+```
+```{r}
+platyrrhines=Primates[[2]][[1]][[2]]
+print(class(platyrrhines))
+print(mode(platyrrhines))
+```
+```{r}
+print(Primates[[2]][[2]]$Tarsiiformes)
+```
